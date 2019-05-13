@@ -12,6 +12,24 @@ public class DataCenter implements Deleteable {
 
 	private long id;
 	private boolean isLogicallyDeleted;
+	private String name;
+	private String location;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String _name) {
+		name = _name;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String _location) {
+		location = _location;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Generator")

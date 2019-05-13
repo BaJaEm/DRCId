@@ -4,43 +4,31 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 @Entity
 @SequenceGenerator(name = "Generator", sequenceName = "key_seq", allocationSize = 1)
-public class Level implements Deleteable {
+public class Domain implements Deleteable {
 
 	private long id;
 	private boolean isLogicallyDeleted;
 	private String name;
-	private LevelDesignator levelDesignator;
-	private String description;
+	private String notes;
 
 	public String getName() {
 		return name;
 	}
 
-	public void setname(String _name) {
+	public void setName(String _name) {
 		name = _name;
 	}
-    @ManyToOne
-    @JoinColumn(name = "level_designator_id", nullable = false)
-	public LevelDesignator getLevelDesignator() {
-		return levelDesignator;
+
+	public String getNotes() {
+		return notes;
 	}
 
-	public void setLevelDesignator(LevelDesignator _levelDesignator) {
-		levelDesignator = _levelDesignator;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String _description) {
-		description = _description;
+	public void setNotes(String _notes) {
+		notes = _notes;
 	}
 
 	@Id

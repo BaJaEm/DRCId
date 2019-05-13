@@ -10,37 +10,47 @@ import javax.persistence.SequenceGenerator;
 
 @Entity
 @SequenceGenerator(name = "Generator", sequenceName = "key_seq", allocationSize = 1)
-public class Level implements Deleteable {
+public class NetworkInterface implements Deleteable {
 
 	private long id;
 	private boolean isLogicallyDeleted;
+	private Host host;
+	private String ipAddress;
+	private String netmask;
 	private String name;
-	private LevelDesignator levelDesignator;
-	private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "host_id", nullable = false)
+	public Host getHost() {
+		return host;
+	}
+
+	public void setHost(Host _host) {
+		host = _host;
+	}
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String _ipAddress) {
+		ipAddress = _ipAddress;
+	}
+
+	public String getNetmask() {
+		return netmask;
+	}
+
+	public void setNetmask(String _netmask) {
+		netmask = _netmask;
+	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setname(String _name) {
+	public void setName(String _name) {
 		name = _name;
-	}
-    @ManyToOne
-    @JoinColumn(name = "level_designator_id", nullable = false)
-	public LevelDesignator getLevelDesignator() {
-		return levelDesignator;
-	}
-
-	public void setLevelDesignator(LevelDesignator _levelDesignator) {
-		levelDesignator = _levelDesignator;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String _description) {
-		description = _description;
 	}
 
 	@Id

@@ -8,10 +8,28 @@ import javax.persistence.SequenceGenerator;
 
 @Entity
 @SequenceGenerator(name = "Generator", sequenceName = "key_seq", allocationSize = 1)
-public class Designator implements Deleteable {
+public class LevelDesignator implements Deleteable {
 
 	private long id;
 	private boolean isLogicallyDeleted;
+	private String name;
+	private String description;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String _name) {
+		name = _name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String _description) {
+		description = _description;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Generator")
