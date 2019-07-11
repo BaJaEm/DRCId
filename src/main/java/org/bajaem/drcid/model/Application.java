@@ -1,10 +1,16 @@
 package org.bajaem.drcid.model;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+
+import org.bajaem.drcid.util.converters.BooleanToStringConverter;
+import org.hibernate.annotations.Check;
+
 
 @Entity
 @SequenceGenerator(name = "Generator", sequenceName = "key_seq", allocationSize = 1)
@@ -32,6 +38,7 @@ public class Application implements Deleteable {
 		id = _id;
 	}
 
+	@Column(nullable = false, unique = true)
 	public int getExternalId() {
 		return externalId;
 	}
@@ -40,6 +47,7 @@ public class Application implements Deleteable {
 		externalId = _externalId;
 	}
 
+	@Column(nullable = false, unique = true, length = 255)
 	public String getName() {
 		return name;
 	}
@@ -48,6 +56,7 @@ public class Application implements Deleteable {
 		name = _name;
 	}
 
+	@Column(nullable = true, length = 255)
 	public String getOwner() {
 		return owner;
 	}
@@ -56,6 +65,7 @@ public class Application implements Deleteable {
 		owner = _owner;
 	}
 
+	@Column(nullable = true, length = 255)
 	public String getMailingList() {
 		return mailingList;
 	}
@@ -64,6 +74,9 @@ public class Application implements Deleteable {
 		mailingList = _mailingList;
 	}
 
+	@Column(nullable = false)
+    @Convert(converter = BooleanToStringConverter.class)
+	@Check(constraints = "IN ('T', 'F')")
 	public boolean isLogicallyDeleted() {
 		return isLogicallyDeleted;
 	}
