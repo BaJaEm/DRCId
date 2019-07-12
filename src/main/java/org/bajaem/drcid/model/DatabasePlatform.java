@@ -1,12 +1,24 @@
 package org.bajaem.drcid.model;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import org.bajaem.drcid.util.converters.BooleanToStringConverter;
+import org.hibernate.annotations.Check;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
+@Table(
+        name="database_platform", 
+        uniqueConstraints=  @UniqueConstraint(columnNames={"db_type", "version"})
+)
 @SequenceGenerator(name = "Generator", sequenceName = "key_seq", allocationSize = 1)
 public class DatabasePlatform implements Deleteable {
 
@@ -17,6 +29,7 @@ public class DatabasePlatform implements Deleteable {
 	private String vendor;
 	
 
+	@Column(name="db_type", nullable = false, length = 255)
 	public String getDatabaseType() {
 		return databaseType;
 	}
@@ -25,6 +38,7 @@ public class DatabasePlatform implements Deleteable {
 		databaseType = _databaseType;
 	}
 
+	@Column(name="version", nullable = false, length = 255)
 	public String getVersion() {
 		return version;
 	}
@@ -33,6 +47,7 @@ public class DatabasePlatform implements Deleteable {
 		version = _version;
 	}
 
+	@Column(name="vendor", nullable = true, length = 255)
 	public String getVendor() {
 		return vendor;
 	}
@@ -51,6 +66,10 @@ public class DatabasePlatform implements Deleteable {
 		id = _id;
 	}
 
+	@Column(name="logically_deleted", nullable = false)
+    @Convert(converter = BooleanToStringConverter.class)
+	@Check(constraints = "IN ('T', 'F')")
+	@ColumnDefault(value = "F")
 	public boolean isLogicallyDeleted() {
 		return isLogicallyDeleted;
 	}

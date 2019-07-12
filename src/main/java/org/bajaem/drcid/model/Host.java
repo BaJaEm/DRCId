@@ -3,6 +3,8 @@ package org.bajaem.drcid.model;
 
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+
+import org.bajaem.drcid.util.converters.BooleanToStringConverter;
+import org.hibernate.annotations.Check;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @SequenceGenerator(name = "Generator", sequenceName = "key_seq", allocationSize = 1)
@@ -27,7 +34,7 @@ public class Host implements Deleteable {
 	private short memory;
 	private short cpuCount;
 	
-	@ManyToMany
+	@ManyToMany(mappedBy = "hosts")
 	public Set<Environment> getEnvironments() {
 		return environments;
 	}
@@ -56,6 +63,7 @@ public class Host implements Deleteable {
 		dataCenter = _dataCenter;
 	}
 
+	@Column(name="host_name", nullable = false, length = 255, unique = true)
 	public String getHostName() {
 		return hostName;
 	}
@@ -74,6 +82,7 @@ public class Host implements Deleteable {
 		domain = _domain;
 	}
 
+	@Column(name="memory", nullable = true)
 	public short getMemory() {
 		return memory;
 	}
@@ -82,6 +91,7 @@ public class Host implements Deleteable {
 		memory = _memory;
 	}
 
+	@Column(name="cpu_count", nullable = true)
 	public short getCpuCount() {
 		return cpuCount;
 	}
@@ -100,6 +110,10 @@ public class Host implements Deleteable {
 		id = _id;
 	}
 
+	@Column(name="logically_deleted", nullable = false)
+    @Convert(converter = BooleanToStringConverter.class)
+	@Check(constraints = "IN ('T', 'F')")
+	@ColumnDefault(value = "F")
 	public boolean isLogicallyDeleted() {
 		return isLogicallyDeleted;
 	}
@@ -107,7 +121,8 @@ public class Host implements Deleteable {
 	public void setLogicallyDeleted(final boolean _isLogicallyDeleted) {
 		isLogicallyDeleted = _isLogicallyDeleted;
 	}
-	@ManyToMany
+
+	@OneToMany(mappedBy="host")
 	public Set<NetworkInterface> getNetworkInterfaces() {
 		return networkInterfaces;
 	}

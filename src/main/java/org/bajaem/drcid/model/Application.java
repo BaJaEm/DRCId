@@ -10,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 
 import org.bajaem.drcid.util.converters.BooleanToStringConverter;
 import org.hibernate.annotations.Check;
+import org.hibernate.annotations.ColumnDefault;
 
 
 @Entity
@@ -38,7 +39,7 @@ public class Application implements Deleteable {
 		id = _id;
 	}
 
-	@Column(nullable = false, unique = true)
+	@Column(name="external_id", nullable = false, unique = true)
 	public int getExternalId() {
 		return externalId;
 	}
@@ -47,7 +48,7 @@ public class Application implements Deleteable {
 		externalId = _externalId;
 	}
 
-	@Column(nullable = false, unique = true, length = 255)
+	@Column(name="name", nullable = false, unique = true, length = 255)
 	public String getName() {
 		return name;
 	}
@@ -56,7 +57,7 @@ public class Application implements Deleteable {
 		name = _name;
 	}
 
-	@Column(nullable = true, length = 255)
+	@Column(name="owner", nullable = true, length = 255)
 	public String getOwner() {
 		return owner;
 	}
@@ -65,7 +66,7 @@ public class Application implements Deleteable {
 		owner = _owner;
 	}
 
-	@Column(nullable = true, length = 255)
+	@Column(name="mailing_list", nullable = true, length = 255)
 	public String getMailingList() {
 		return mailingList;
 	}
@@ -74,9 +75,10 @@ public class Application implements Deleteable {
 		mailingList = _mailingList;
 	}
 
-	@Column(nullable = false)
+	@Column(name="logically_deleted", nullable = false)
     @Convert(converter = BooleanToStringConverter.class)
 	@Check(constraints = "IN ('T', 'F')")
+	@ColumnDefault(value = "F")
 	public boolean isLogicallyDeleted() {
 		return isLogicallyDeleted;
 	}

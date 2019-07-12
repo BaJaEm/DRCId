@@ -1,10 +1,16 @@
 package org.bajaem.drcid.model;
 
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+
+import org.bajaem.drcid.util.converters.BooleanToStringConverter;
+import org.hibernate.annotations.Check;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @SequenceGenerator(name = "Generator", sequenceName = "key_seq", allocationSize = 1)
@@ -15,6 +21,8 @@ public class Site implements Deleteable {
 	private String name;
 	private String location;
 
+	
+	@Column(name="name", nullable = false, length = 25, unique = true)
 	public String getName() {
 		return name;
 	}
@@ -23,6 +31,7 @@ public class Site implements Deleteable {
 		name = _name;
 	}
 
+	@Column(name="location", nullable = true, length = 255)
 	public String getLocation() {
 		return location;
 	}
@@ -41,6 +50,10 @@ public class Site implements Deleteable {
 		id = _id;
 	}
 
+	@Column(name="logically_deleted", nullable = false)
+    @Convert(converter = BooleanToStringConverter.class)
+	@Check(constraints = "IN ('T', 'F')")
+	@ColumnDefault(value = "F")
 	public boolean isLogicallyDeleted() {
 		return isLogicallyDeleted;
 	}
