@@ -29,6 +29,7 @@ public class Environment implements Deleteable {
 	private Site site;
 	private Set<Database> databases;
 	private Set<Host> hosts;
+	private Set<Storage> storage;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Generator")
@@ -100,5 +101,15 @@ public class Environment implements Deleteable {
 
 	public void setHosts(final Set<Host> _hosts) {
 		hosts = _hosts;
+	}
+
+	@ManyToMany
+	@JoinTable(name = "storage_env")
+	public Set<Storage> getStorage() {
+		return storage;
+	}
+
+	public void setStorage(Set<Storage> _storage) {
+		storage = _storage;
 	}
 }
